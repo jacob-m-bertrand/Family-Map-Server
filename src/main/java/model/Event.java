@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -42,10 +43,28 @@ public class Event {
 
     @Override
     public String toString() {
-        return String.format("%s from user %s: Person %s at %f, %f (%s, %s). Type of %s in %d", eventID, associatedUsername,
-                personID, latitude, longitude, city, country, eventType, year);
+        return String.format("Event - %s : %s : %s : %f : %f : %s : %s : %s : %d", eventID, associatedUsername,
+                personID, latitude, longitude, city, country, eventType, year).trim();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof Event)) return false;
+
+        Event e = (Event) o;
+
+        if(!eventID.equals(e.eventID)) return false;
+        if(!associatedUsername.equals(e.associatedUsername)) return false;
+        if(!personID.equals(e.personID)) return false;
+        if(latitude != e.latitude) return false;
+        if(longitude != e.longitude) return false;
+        if(!country.equals(e.country)) return false;
+        if(!city.equals(e.city)) return false;
+        if(!eventType.equals(e.eventType)) return false;
+        if(year != e.year) return false;
+
+        return true;
+    }
 
     public String getEventID() {
         return eventID;

@@ -1,7 +1,14 @@
 package dao;
 
 public class DataAccessException extends Exception {
-    public DataAccessException() {
-        System.out.println("Data access exception!");
+    private String message;
+
+    public DataAccessException(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
     }
 }

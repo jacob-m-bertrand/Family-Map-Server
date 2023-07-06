@@ -13,4 +13,17 @@ public class Authtoken {
         this.username = username;
         authtoken = UUID.randomUUID().toString();
     }
+
+    public Authtoken(String username, String authtoken){
+        this.username = username;
+        this.authtoken = authtoken;
+    }
+
+    public String getAuthtoken() {
+        return authtoken;
+    }
+
+    public String getUsername() {
+        return username;
+    }
 }

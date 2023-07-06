@@ -1,38 +1,64 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
+import model.Event;
+
+import java.sql.*;
+import java.util.ArrayList;
 
 public class TableTools {
-    private final Connection conn;
+    private static Connection conn;
 
-    /**
-     * @param conn Server connection
-     */
-    public TableTools(Connection conn) {
-        this.conn = conn;
+    static {
+        conn = Database.getConnection();
     }
 
-    public void clear(String tableName) throws SQLException, DataAccessException {
-        if(!exists(tableName)) throw new DataAccessException();
+    public static void clear(String tableName) throws SQLException, DataAccessException {
+        if(!tableExists(tableName)) throw new DataAccessException("Table doesnt exist!");
 
-        String sql = "DELETE FROM ?";
+        StringBuilder sql = new StringBuilder("DELETE FROM " + tableName);
 
-        PreparedStatement statement = conn.prepareStatement(sql);
-        statement.setString(1, tableName);
+        Statement statement = conn.createStatement();
+        statement.execute(sql.toString());
 
-        statement.executeUpdate();
+        Database.commit();
+
         statement.close();
 
     }
 
-    public boolean exists(String tableName) throws SQLException {
+    public static boolean tableExists(String tableName) throws SQLException {
         DatabaseMetaData metaData = conn.getMetaData();
         ResultSet resultSet = metaData.getTables(null, null, tableName, null);
 
         return resultSet.next();
+    }
+
+    public static boolean tableIsEmpty(String tableName) throws DataAccessException {
+        String sql = "SELECT COUNT(*) FROM " + tableName;
+
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            ResultSet queryResults = statement.executeQuery();
+
+            return queryResults.getInt(1) == 0;
+        }
+        catch (Exception e) {
+            throw new DataAccessException(e.getMessage());
+        }
+    }
+
+    public static boolean exists(String tableName, String attribute, String value) throws DataAccessException {
+        String sql = "SELECT COUNT(*) FROM " + tableName + " WHERE " + attribute + " = ?";
+
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, value);
+            ResultSet queryResults = statement.executeQuery();
+
+            return queryResults.getInt(1) == 0;
+        }
+        catch (Exception e) {
+            throw new DataAccessException(e.getMessage());
+        }
     }
 }

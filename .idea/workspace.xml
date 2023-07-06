@@ -4,7 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="898acf0c-33fc-4c0b-86b2-098e2c2d6f54" name="Changes" comment="" />
+    <list default="true" id="898acf0c-33fc-4c0b-86b2-098e2c2d6f54" name="Changes" comment="init">
+      <change afterPath="$PROJECT_DIR$/src/main/java/dao/Database.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dao/NotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/passoff/DAO/EventDAOTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/AuthtokenDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/AuthtokenDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/DataAccessException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/DataAccessException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/EventDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/EventDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/InsertFailedException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/PersonDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/PersonDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/TableTools.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/TableTools.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Authtoken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Authtoken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/passoff/EventDAOTesting.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dao/AuthtokenDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/AuthtokenDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dao/DataAccessException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/DataAccessException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dao/EventDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/EventDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dao/InsertFailedException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dao/PersonDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/PersonDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dao/TableTools.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/TableTools.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dao/UserDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/UserDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Authtoken.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Authtoken.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Event.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Event.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Person.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Person.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/passoff/EventDAOTesting.class" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,17 +74,62 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;last_directory_selection&quot;: &quot;C:/Users/jacob/OneDrive - Brigham Young University/School/Summer 2023/C S 240/Family Map Server/src/test/java&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/jacob/Downloads/CodeGPT-2.0.4-signed.zip&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jacob/OneDrive - Brigham Young University/School/Summer 2023/C S 240/Family Map Server&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
-  <component name="RunManager" selected="JUnit.EventDAOTesting.testSingleInsert">
-    <configuration name="HelloWorld" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="HelloWorld" />
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jacob\OneDrive - Brigham Young University\School\Summer 2023\C S 240\Family Map Server\src\test\java\passoff" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.EventDAOTest">
+    <configuration name="EventDAOTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FamilyMapServerStudent" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="passoff.DAO.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="passoff.DAO" />
+      <option name="MAIN_CLASS_NAME" value="passoff.DAO.EventDAOTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EventDAOTest.clearTesting" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FamilyMapServerStudent" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="passoff.DAO.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="passoff.DAO" />
+      <option name="MAIN_CLASS_NAME" value="passoff.DAO.EventDAOTest" />
+      <option name="METHOD_NAME" value="clearTesting" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EventDAOTest.listByUsernameTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FamilyMapServerStudent" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="passoff.DAO.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="passoff.DAO" />
+      <option name="MAIN_CLASS_NAME" value="passoff.DAO.EventDAOTest" />
+      <option name="METHOD_NAME" value="listByUsernameTest" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -66,55 +138,38 @@
       <module name="FamilyMapServerStudent" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="passoff.*" />
+          <option name="PATTERN" value="passoff.DAO.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="passoff" />
-      <option name="MAIN_CLASS_NAME" value="passoff.EventDAOTesting" />
+      <option name="PACKAGE_NAME" value="passoff.DAO" />
+      <option name="MAIN_CLASS_NAME" value="passoff.DAO.EventDAOTesting" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EventDAOTesting.testList" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="passoff.DAO in FamilyMapServerStudent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FamilyMapServerStudent" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="passoff.*" />
+          <option name="PATTERN" value="passoff.DAO.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="passoff" />
-      <option name="MAIN_CLASS_NAME" value="passoff.EventDAOTesting" />
-      <option name="METHOD_NAME" value="testList" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EventDAOTesting.testSingleInsert" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="FamilyMapServerStudent" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="passoff.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="passoff" />
-      <option name="MAIN_CLASS_NAME" value="passoff.EventDAOTesting" />
-      <option name="METHOD_NAME" value="testSingleInsert" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="passoff.DAO" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.EventDAOTesting.testSingleInsert" />
-        <item itemvalue="JUnit.EventDAOTesting.testList" />
+        <item itemvalue="JUnit.EventDAOTest" />
+        <item itemvalue="JUnit.EventDAOTest.listByUsernameTest" />
+        <item itemvalue="JUnit.EventDAOTest.clearTesting" />
+        <item itemvalue="JUnit.passoff.DAO in FamilyMapServerStudent" />
         <item itemvalue="JUnit.EventDAOTesting" />
-        <item itemvalue="Application.HelloWorld" />
       </list>
     </recent_temporary>
   </component>
@@ -127,17 +182,18 @@
       <option name="presentableId" value="Default" />
       <updated>1687985703797</updated>
     </task>
+    <task id="LOCAL-00001" summary="init">
+      <created>1688582417753</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1688582417753</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/passoff/EventDAOTesting.java</url>
-          <line>54</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init" />
+    <option name="LAST_COMMIT_MESSAGE" value="init" />
   </component>
 </project>

@@ -1,5 +1,6 @@
 package dao;
 
+import model.Event;
 import model.Person;
 import model.User;
 
@@ -20,8 +21,26 @@ public class UserDAO {
      * Inserts an event into the Events table
      * @param user Event object to insert into the Events table
      */
-    public void insert(User user) {
+    public void insert(User user) throws DataAccessException {
+        String sql = "INSERT INTO User VALUES (?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement insertStatement = null;
 
+        try {
+            insertStatement = conn.prepareStatement(sql);
+            insertStatement.setString(1, user.getUsername());
+            insertStatement.setString(2, user.getPassword());
+            insertStatement.setString(3, user.getEmail());
+            insertStatement.setString(4, user.getFirstName());
+            insertStatement.setString(5, user.getLastName());
+            insertStatement.setString(6, user.getPersonID());
+
+            int rowsAdded = insertStatement.executeUpdate();
+            if(rowsAdded == 0) throw new DataAccessException("No rows were added.");
+            insertStatement.close();
+        }
+        catch(SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
     }
 
 
@@ -32,17 +51,36 @@ public class UserDAO {
      * @throws DataAccessException  In the case that the event cannot be found or the table does not exist
      */
     public User find(String username) throws DataAccessException {
-        return null;
+        String sql = "SELECT * FROM User WHERE username = ?";
+
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, username);
+
+            ResultSet findResult = statement.executeQuery();
+
+            User toReturn = toObject(findResult);
+            if (toReturn == null) throw new DataAccessException("User not found!");
+
+            return toReturn;
+        }
+        catch(SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
     }
 
-    /**
-     * Gets the user's person object
-     * @param username              The username for whom we perform the lookup
-     * @return                      A person object representing their person in the database
-     * @throws DataAccessException  In the case that the event cannot be found or the table does not exist
-     */
-    public Person getPersonObject(String username) throws DataAccessException {
-        return null;
+    private User toObject(ResultSet result) throws SQLException {
+        if(!result.next()) return null;
+
+        String username = result.getString(1);
+        String password = result.getString(2);
+        String email = result.getString(3);
+        String firstName = result.getString(4);
+        String lastName = result.getString(5);
+        String gender = result.getString(6);
+        String personID = result.getString(7);
+
+        return new User(username, password, email, firstName, lastName, gender);
     }
 
     /**
@@ -50,6 +88,11 @@ public class UserDAO {
      * @throws DataAccessException in the case that the table does not exist
      */
     public void clear() throws DataAccessException {
-
+        try {
+            TableTools.clear("User");
+        }
+        catch(SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
     }
 }

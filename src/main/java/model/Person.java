@@ -46,6 +46,37 @@ public class Person {
         spouseID = null;
     }
 
+    public String toString() {
+        StringBuilder output = new StringBuilder(String.format("Person - %s : %s : %s : %s : %s ", personID, associatedUsername, firstName, lastName, gender));
+
+        if(fatherID == null) output.append(": null ");
+        else output.append(String.format(": %s ", fatherID));
+
+        if(motherID == null) output.append(": null ");
+        else output.append(String.format(": %s ", motherID));
+
+        if(spouseID == null) output.append(": null ");
+        else output.append(String.format(": %s", spouseID));
+
+        return output.toString();
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof Person)) return false;
+        Person other = (Person) o;
+
+        if(!personID.equals(other.personID)) return false;
+        if(!associatedUsername.equals(other.associatedUsername)) return false;
+        if(!firstName.equals(other.firstName)) return false;
+        if(!lastName.equals(other.lastName)) return false;
+        if(!gender.equals(other.gender)) return false;
+        if(!fatherID.equals(other.fatherID)) return false;
+        if(!motherID.equals(other.motherID)) return false;
+        if(!spouseID.equals(other.spouseID)) return false;
+
+        return true;
+    }
+
     public String getPersonID() {
         return personID;
     }
