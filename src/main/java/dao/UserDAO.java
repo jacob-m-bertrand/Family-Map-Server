@@ -22,25 +22,17 @@ public class UserDAO {
      * @param user Event object to insert into the Events table
      */
     public void insert(User user) throws DataAccessException {
-        String sql = "INSERT INTO User VALUES (?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement insertStatement = null;
+        String insertSql = String.format("INSERT INTO User VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s'')",
+                user.getPersonID(), user.getPassword(), user.getEmail(), user.getFirstName(), user.getLastName(),
+                user.getGender(), user.getPersonID());
 
-        try {
-            insertStatement = conn.prepareStatement(sql);
-            insertStatement.setString(1, user.getUsername());
-            insertStatement.setString(2, user.getPassword());
-            insertStatement.setString(3, user.getEmail());
-            insertStatement.setString(4, user.getFirstName());
-            insertStatement.setString(5, user.getLastName());
-            insertStatement.setString(6, user.getPersonID());
+        int rowsAdded = SQLTools.executeInsert(insertSql);
 
-            int rowsAdded = insertStatement.executeUpdate();
-            if(rowsAdded == 0) throw new DataAccessException("No rows were added.");
-            insertStatement.close();
-        }
-        catch(SQLException e) {
-            throw new DataAccessException(e.getMessage());
-        }
+        // If no rows were added, throw an exception
+        if(rowsAdded == 0) throw new DataAccessException("No rows were added.");
+
+        // Commit the changes and cleanup
+        Database.commit();
     }
 
 
@@ -50,49 +42,38 @@ public class UserDAO {
      * @return                      An Event object representing the event from the table
      * @throws DataAccessException  In the case that the event cannot be found or the table does not exist
      */
-    public User find(String username) throws DataAccessException {
-        String sql = "SELECT * FROM User WHERE username = ?";
+    public User find(String username) throws DataAccessException, NotFoundException {
+        // If the event doesn't exist in the table, throw an exception
+        if(ValueTools.exists("User", "username", username)) throw new NotFoundException();
 
+        String findSql = String.format("SELECT * FROM User WHERE eventID = '%s'", username);
+
+        // Store the results of the query, then close
+        ResultSet findResult = SQLTools.executeQuery(findSql);
+
+        return createUserObject(findResult);
+    }
+
+    private User createUserObject(ResultSet result) throws DataAccessException {
         try {
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, username);
+            String username = result.getString(1);
+            String password = result.getString(2);
+            String email = result.getString(3);
+            String firstName = result.getString(4);
+            String lastName = result.getString(5);
+            String gender = result.getString(6);
+            String personID = result.getString(7);
 
-            ResultSet findResult = statement.executeQuery();
-
-            User toReturn = toObject(findResult);
-            if (toReturn == null) throw new DataAccessException("User not found!");
-
-            return toReturn;
+            return new User(username, password, email, firstName, lastName, gender);
         }
         catch(SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
-    }
-
-    private User toObject(ResultSet result) throws SQLException {
-        if(!result.next()) return null;
-
-        String username = result.getString(1);
-        String password = result.getString(2);
-        String email = result.getString(3);
-        String firstName = result.getString(4);
-        String lastName = result.getString(5);
-        String gender = result.getString(6);
-        String personID = result.getString(7);
-
-        return new User(username, password, email, firstName, lastName, gender);
     }
 
     /**
      * Clears the table
      * @throws DataAccessException in the case that the table does not exist
      */
-    public void clear() throws DataAccessException {
-        try {
-            TableTools.clear("User");
-        }
-        catch(SQLException e) {
-            throw new DataAccessException(e.getMessage());
-        }
-    }
+    public void clear() throws DataAccessException { TableTools.clear("User"); }
 }

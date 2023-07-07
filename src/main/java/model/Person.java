@@ -1,7 +1,6 @@
 package model;
 
 import java.util.UUID;
-import model.Person;
 
 public class Person {
     private final String personID;
@@ -12,17 +11,6 @@ public class Person {
     private final String fatherID;
     private final String motherID;
     private final String spouseID;
-
-    public Person(String associatedUsername, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID) {
-        this.personID = UUID.randomUUID().toString();
-        this.associatedUsername = associatedUsername;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.fatherID = fatherID;
-        this.motherID = motherID;
-        this.spouseID = spouseID;
-    }
 
     public Person(String personID, String associatedUsername, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID) {
         this.personID = personID;
@@ -35,46 +23,58 @@ public class Person {
         this.spouseID = spouseID;
     }
 
+
+    public Person(String associatedUsername, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID) {
+        this.personID = UUID.randomUUID().toString();
+        this.associatedUsername = associatedUsername;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.fatherID = fatherID;
+        this.motherID = motherID;
+        this.spouseID = spouseID;
+    }
+
+    public Person(String associatedUsername, String firstName, String lastName, String gender) {
+        personID = UUID.randomUUID().toString();
+        this.associatedUsername = associatedUsername;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        fatherID = "";
+        motherID = "";
+        spouseID = "";
+
+    }
+
     public Person(User user) {
         personID = user.getPersonID();
         associatedUsername = user.getUsername();
         firstName = user.getFirstName();
         lastName = user.getLastName();
         gender = user.getGender();
-        fatherID = null;
-        motherID = null;
-        spouseID = null;
+        fatherID = "";
+        motherID = "";
+        spouseID = "";
     }
 
     public String toString() {
-        StringBuilder output = new StringBuilder(String.format("Person - %s : %s : %s : %s : %s ", personID, associatedUsername, firstName, lastName, gender));
-
-        if(fatherID == null) output.append(": null ");
-        else output.append(String.format(": %s ", fatherID));
-
-        if(motherID == null) output.append(": null ");
-        else output.append(String.format(": %s ", motherID));
-
-        if(spouseID == null) output.append(": null ");
-        else output.append(String.format(": %s", spouseID));
-
-        return output.toString();
+        return String.format("Person - %s : %s : %s : %s : %s : %s : %s : %s",
+                personID, associatedUsername, firstName, lastName, gender, fatherID, motherID, spouseID);
     }
 
     public boolean equals(Object o) {
         if (!(o instanceof Person)) return false;
         Person other = (Person) o;
 
-        if(!personID.equals(other.personID)) return false;
-        if(!associatedUsername.equals(other.associatedUsername)) return false;
-        if(!firstName.equals(other.firstName)) return false;
-        if(!lastName.equals(other.lastName)) return false;
-        if(!gender.equals(other.gender)) return false;
-        if(!fatherID.equals(other.fatherID)) return false;
-        if(!motherID.equals(other.motherID)) return false;
-        if(!spouseID.equals(other.spouseID)) return false;
-
-        return true;
+        return personID.equals(other.personID)
+                && associatedUsername.equals(other.associatedUsername)
+                && firstName.equals(other.firstName)
+                && lastName.equals(other.lastName)
+                && gender.equals(other.gender)
+                && fatherID.equals(other.fatherID)
+                && motherID.equals(other.motherID)
+                && spouseID.equals(other.spouseID);
     }
 
     public String getPersonID() {

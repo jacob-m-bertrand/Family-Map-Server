@@ -4,33 +4,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="898acf0c-33fc-4c0b-86b2-098e2c2d6f54" name="Changes" comment="init">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/Database.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/NotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/passoff/DAO/EventDAOTest.java" afterDir="false" />
+    <list default="true" id="898acf0c-33fc-4c0b-86b2-098e2c2d6f54" name="Changes" comment="Added basic structure of all DAO classes, completed work on EventDAO, and made and ran unit tests for EventDAO">
+      <change afterPath="$PROJECT_DIR$/src/main/java/dao/SQLTools.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dao/ValueTools.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dao/AuthtokenDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/AuthtokenDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/DataAccessException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/DataAccessException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dao/EventDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/EventDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/InsertFailedException.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dao/PersonDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/PersonDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dao/TableTools.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/TableTools.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/UserDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/model/Authtoken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Authtoken.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Event.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/model/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Person.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/passoff/EventDAOTesting.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dao/AuthtokenDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/AuthtokenDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dao/DataAccessException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/DataAccessException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dao/AuthtokenDAO.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/dao/EventDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/EventDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dao/InsertFailedException.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/dao/PersonDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/PersonDAO.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/dao/TableTools.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/TableTools.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dao/UserDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/UserDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/Authtoken.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Authtoken.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dao/UserDAO.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/Event.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Event.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/Person.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Person.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/passoff/EventDAOTesting.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/request/EventRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/request/LoadRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/request/LoginRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/request/PersonRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/result/EventResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/result/ListEventsResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/result/ListPersonsResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/result/LoginResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/result/PersonResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/result/RegisterResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/service/LoadService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/service/Service.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,11 +193,50 @@
       <option name="project" value="LOCAL" />
       <updated>1688582417753</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added basic structure of all DAO classes, completed work on EventDAO, and made and ran unit tests for EventDAO">
+      <created>1688676669491</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1688676669491</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
-    <option name="LAST_COMMIT_MESSAGE" value="init" />
+    <MESSAGE value="Added basic structure of all DAO classes, completed work on EventDAO, and made and ran unit tests for EventDAO" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added basic structure of all DAO classes, completed work on EventDAO, and made and ran unit tests for EventDAO" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/dao/PersonDAO.java</url>
+          <line>59</line>
+          <properties class="dao.PersonDAO" method="list">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/dao/PersonDAO.java</url>
+          <line>41</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

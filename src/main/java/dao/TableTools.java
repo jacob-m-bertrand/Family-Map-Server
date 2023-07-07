@@ -12,17 +12,22 @@ public class TableTools {
         conn = Database.getConnection();
     }
 
-    public static void clear(String tableName) throws SQLException, DataAccessException {
-        if(!tableExists(tableName)) throw new DataAccessException("Table doesnt exist!");
+    public static void clear(String tableName) throws DataAccessException {
+        try {
+            if(!tableExists(tableName)) throw new DataAccessException("Table doesnt exist!");
 
-        StringBuilder sql = new StringBuilder("DELETE FROM " + tableName);
+            StringBuilder sql = new StringBuilder("DELETE FROM " + tableName);
 
-        Statement statement = conn.createStatement();
-        statement.execute(sql.toString());
+            Statement statement = conn.createStatement();
+            statement.execute(sql.toString());
 
-        Database.commit();
+            Database.commit();
 
-        statement.close();
+            statement.close();
+        }
+        catch(SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
 
     }
 
@@ -47,18 +52,6 @@ public class TableTools {
         }
     }
 
-    public static boolean exists(String tableName, String attribute, String value) throws DataAccessException {
-        String sql = "SELECT COUNT(*) FROM " + tableName + " WHERE " + attribute + " = ?";
 
-        try {
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, value);
-            ResultSet queryResults = statement.executeQuery();
 
-            return queryResults.getInt(1) == 0;
-        }
-        catch (Exception e) {
-            throw new DataAccessException(e.getMessage());
-        }
-    }
 }

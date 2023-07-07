@@ -20,21 +20,16 @@ public class AuthtokenDAO {
      * @param authtoken Authtoken to insert into the Events table
      */
     public void insert(Authtoken authtoken) throws DataAccessException {
-        String sql = "INSERT INTO Authtoken VALUES (?, ?)";
-        PreparedStatement insertStatement = null;
+        String insertSql = String.format("INSERT INTO Authtoken VALUES ('%s', '%s')",
+                authtoken.getUsername(), authtoken.getAuthtoken());
 
-        try {
-            insertStatement = conn.prepareStatement(sql);
-            insertStatement.setString(1, authtoken.getUsername());
-            insertStatement.setString(2, authtoken.getAuthtoken());
+        int rowsAdded = SQLTools.executeInsert(insertSql);
 
-            int rowsAdded = insertStatement.executeUpdate();
-            if(rowsAdded == 0) throw new DataAccessException("No rows were added.");
-            insertStatement.close();
-        }
-        catch(SQLException e) {
-            throw new DataAccessException(e.getMessage());
-        }
+        // If no rows were added, throw an exception
+        if(rowsAdded == 0) throw new DataAccessException("No rows were added.");
+
+        // Commit the changes and cleanup
+        Database.commit();
     }
 
     /**
@@ -43,44 +38,33 @@ public class AuthtokenDAO {
      * @return                      An Event object representing the event from the table
      * @throws DataAccessException  In the case that the authtoken cannot be found or the table does not exist
      */
-    public Authtoken find(String username) throws DataAccessException {
-        String sql = "SELECT * FROM Authtoken WHERE username = ?";
+    public Authtoken find(String username) throws DataAccessException, NotFoundException {
+        // If the event doesn't exist in the table, throw an exception
+        if(ValueTools.exists("Authtoken", "username", username)) throw new NotFoundException();
 
-        try {
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1,username);
+        String findSql = String.format("SELECT * FROM Authtoken WHERE username = '%s'", username);
 
-            ResultSet findResult = statement.executeQuery();
+        // Store the results of the query, then close
+        ResultSet findResult = SQLTools.executeQuery(findSql);
 
-            Authtoken toReturn = resultToObject(findResult);
-            if (toReturn == null) throw new DataAccessException("Event not found!");
-
-            return toReturn;
-        }
-        catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
-        }
+        return createAuthtokenObject(findResult);
     }
 
-    private Authtoken resultToObject(ResultSet result) throws SQLException {
-        if(!result.next()) return null;
+    private Authtoken createAuthtokenObject(ResultSet result) throws DataAccessException {
+        try {
+            String username = result.getString(1);
+            String authtoken = result.getString(2);
 
-        String username = result.getString(1);
-        String authtoken = result.getString(2);
-
-        return new Authtoken(username);
+            return new Authtoken(username);
+        }
+        catch(SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
     }
 
     /**
      * Clears the table
      * @throws DataAccessException in the case that the table does not exist
      */
-    public void clear() throws DataAccessException {
-        try {
-            TableTools.clear("Authtoken");
-        }
-        catch (SQLException e){
-            throw new DataAccessException(e.getMessage());
-        }
-    }
+    public void clear() throws DataAccessException { TableTools.clear("Authtoken"); }
 }

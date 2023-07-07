@@ -1,7 +1,7 @@
 package dao;
+
 import model.Event;
 import model.Person;
-import model.User;
 
 import javax.xml.crypto.Data;
 import java.sql.*;
@@ -12,107 +12,81 @@ public class PersonDAO {
     private final Connection conn;
 
     /**
+     * Constructs the PersonDAO Object
      * @param conn Server connection
      */
     public PersonDAO(Connection conn) {
         this.conn = conn;
     }
 
+
     /**
      * Inserts an event into the Events table
      * @param person Person object to insert into the Events table
      */
     public void insert(Person person) throws DataAccessException {
-        String sql = "INSERT INTO Event VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertSql = String.format("INSERT INTO Person VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+                person.getPersonID(), person.getAssociatedUsername(), person.getFirstName(), person.getLastName(), person.getGender(),
+                person.getFatherID(), person.getMotherID(), person.getSpouseID());
 
-        try {
-            PreparedStatement insertStatement = conn.prepareStatement(sql);
-            insertStatement.setString(1, person.getPersonID());
-            insertStatement.setString(2, person.getAssociatedUsername());
-            insertStatement.setString(3, person.getFirstName());
-            insertStatement.setString(4, person.getLastName());
-            insertStatement.setString(5, person.getGender());
+        int rowsAdded = SQLTools.executeInsert(insertSql);
 
-            if(person.getFatherID() != null) insertStatement.setString(6, person.getFatherID());
-            if(person.getMotherID() != null) insertStatement.setString(7, person.getMotherID());
-            if(person.getSpouseID() != null) insertStatement.setString(8, person.getSpouseID());
+        // If no rows were added, throw an exception
+        if(rowsAdded == 0) throw new DataAccessException("No rows were added.");
 
-            int rowsAdded = insertStatement.executeUpdate();
-
-            if(rowsAdded == 0) throw new DataAccessException("Zero rows added.");
-
-            insertStatement.close();
-        }
-        catch(SQLException e) {
-            throw new DataAccessException(e.getMessage());
-        }
-
+        // Commit the changes and cleanup
+        Database.commit();
     }
 
-    public Person find(String personID) throws DataAccessException {
-        String sql = "SELECT * FROM Person WHERE personID = ?";
+    public Person find(String personID) throws DataAccessException, NotFoundException {
+        // If the event doesn't exist in the table, throw an exception
+        if(ValueTools.exists("Person", "personID", personID)) throw new NotFoundException();
 
-        try {
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, personID);
+        String findSql = String.format("SELECT * FROM Person WHERE eventID = '%s'", personID);
 
-            ResultSet findResult = statement.executeQuery();
+        // Store the results of the query, then close
+        ResultSet findResult = SQLTools.executeQuery(findSql);
 
-            Person toReturn = toObject(findResult);
-            if (toReturn == null) throw new DataAccessException("Event not found!");
-
-            return toReturn;
-        }
-        catch(Exception e) {
-            throw new DataAccessException(e.getMessage());
-        }
-    }
-
-    private Person toObject(ResultSet result) throws SQLException {
-        if(!result.next()) return null;
-
-        String personID = result.getString(1);
-        String associatedUsername = result.getString(2);
-        String firstName = result.getString(3);
-        String lastName = result.getString(4);
-        String gender = result.getString(5);
-        String fatherID = result.getString(6);
-        String motherID = result.getString(7);
-        String spouseID = result.getString(8);
-
-        return new Person(personID, associatedUsername, firstName, lastName, gender, fatherID, motherID, spouseID);
-    }
-
-
-    public ArrayList<Person> list(String column, String value) throws DataAccessException {
-        String sql = "SELECT * FROM Event WHERE ? = ?";
-        ArrayList<Person> toReturn = new ArrayList<Person>();
-
-        try {
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, column);
-            statement.setString(2, value);
-
-            ResultSet queryResults = statement.executeQuery();
-
-            while (queryResults.next()) {
-                toReturn.add(toObject(queryResults));
-            }
-
-            return toReturn;
-        }
-        catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
-        }
+        return createPersonObject(findResult);
     }
 
     /**
      * Clears the table
      * @throws DataAccessException in the case that the table does not exist
      */
-    public void clear() throws DataAccessException {
+    public void clear() throws DataAccessException { TableTools.clear("Person"); }
+
+
+    public ArrayList<Person> list(String attribute, String value) throws DataAccessException, NotFoundException {
+        // Ensure the attribute and value exist before moving on
+        if (ValueTools.exists("Person", attribute, value)) throw new NotFoundException();
+
+        String sql = String.format("SELECT * FROM Person WHERE %s = '%s'", attribute, value);
+        ResultSet results = SQLTools.executeQuery(sql);
+        ArrayList<Person> toReturn = new ArrayList<Person>();
+
         try {
-            TableTools.clear("Person");
+            while (results.next()) toReturn.add(createPersonObject(results));
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+
+        return toReturn;
+    }
+
+    private Person createPersonObject(ResultSet result) throws DataAccessException {
+
+        try {
+            String personID = result.getString(1);
+            String associatedUsername = result.getString(2);
+            String firstName = result.getString(3);
+            String lastName = result.getString(4);
+            String gender = result.getString(5);
+            String fatherID = result.getString(6);
+            String motherID = result.getString(7);
+            String spouseID = result.getString(8);
+
+            return new Person(personID, associatedUsername, firstName, lastName, gender, fatherID, motherID, spouseID);
         }
         catch(SQLException e) {
             throw new DataAccessException(e.getMessage());
