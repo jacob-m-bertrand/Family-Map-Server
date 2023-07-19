@@ -1,34 +1,45 @@
 package result;
 
-import model.Authtoken;
-
 /**
  * Stores the result of the LoginService (/user/login)
  */
 public class LoginResult extends Result {
-    /** Store the results of the login, which are final */
-    private final Authtoken authtoken;
+    /** The authorization token for this session, used later to validate user while accessing data. */
+    private final String authtoken;
+
+    /** The user's username, which will also be used to validate the user while accessing data. */
     private final String username;
+
+    /** The user's personID, used to connect them to their family tree. */
     private final String personID;
 
-
-    /** Constructor if a success */
-    public LoginResult(String message, boolean success, Authtoken authtoken, String username, String personID) {
-            super(message, success);
+    /**
+     * Constructs the LoginResult from data provided by the service.
+     * @param success   The success status of the login process.
+     * @param authtoken The authtoken used for this session.
+     * @param username  The username of the user.
+     * @param personID  The user's personID, used to situate them on the family map.
+     */
+    public LoginResult(boolean success, String authtoken, String username, String personID) {
+            super(success);
             this.authtoken = authtoken;
             this.username = username;
             this.personID = personID;
     }
 
-    /** Constructor if fail */
-    public LoginResult(String errorMessage) {
-            super("Error:" + errorMessage, false);
+    /**
+     * Constructs the LoginResult with a message.
+     * @param success The success status of the login process.
+     * @param message The message returned by the login service.
+     */
+    public LoginResult(boolean success, String message) {
+            super(success, message);
             authtoken = null;
             username = null;
             personID = null;
     }
 
-    public Authtoken getAuthtoken() {
+    public String getAuthtoken() {
         return authtoken;
     }
 

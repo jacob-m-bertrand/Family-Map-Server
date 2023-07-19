@@ -1,15 +1,20 @@
 package request;
 
-import result.LoginResult;
-
 /**
- * Stores data which will be passed to the LoginService (/login)
+ * Stores user-provided data which will be used to log them in.
  */
 public class LoginRequest {
-    /** Store the username and password of the user who wants to login */
+    /** The provided username */
     private final String username;
+
+    /** The provided password */
     private final String password;
 
+    /**
+     * Constructs the LoginRequest from user-provided data
+     * @param username The user-provided username
+     * @param password The user-provided password
+     */
     public LoginRequest(String username, String password) {
         this.username = username;
         this.password = password;

@@ -1,44 +1,50 @@
 package dao;
 
-import javax.xml.crypto.Data;
+import exception.DataAccessException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
+/**
+ * Stores all Database information and implements all Database functions. It is static, preventing opening more than one
+ * connection at once.
+ */
 public class Database {
-    private static final String url = "jdbc:sqlite:C:\\Users\\jacob\\OneDrive - Brigham Young University\\School\\Summer 2023\\C S 240\\FamilyMap SQL\\FMS.db";
+    /** The URL of the database. */
+    private static final String url = "jdbc:sqlite:Family Map Server.db";
+
+    /** The connection to the database. */
     private static final Connection conn;
 
+    /* Set up the connection */
     static {
         try {
-            conn = DriverManager.getConnection(Database.getURL());
+            conn = DriverManager.getConnection(url);
+
+            // Disable Auto Commit for easier testing.
             conn.setAutoCommit(false);
-        }
-        catch(SQLException e) {
-            throw new RuntimeException("TableTools could not connect to the database!");
+
+        } catch(Exception e) {
+            throw new RuntimeException("Could not connect to Database: " + e.getMessage());
         }
     }
 
-    public static Connection getConnection() { return conn; }
-
+    /**
+     * Commits any pending changes.
+     * @throws DataAccessException If there is an issue accessing the database or table.
+     */
     public static void commit() throws DataAccessException {
         try {
             conn.commit();
-        }
-        catch (SQLException e) {
+
+        } catch (SQLException e) {
+            // Caused by an error in the sql statement
             throw new DataAccessException(e.getMessage());
         }
     }
 
-    public static String getURL() { return url; }
-
-    public static void rollback() throws DataAccessException {
-        try {
-            conn.rollback();
-        }
-        catch(SQLException e) {
-            throw new DataAccessException("Database could not be rolled back.");
-        }
+    public static Connection getConnection() {
+        return conn;
     }
 }

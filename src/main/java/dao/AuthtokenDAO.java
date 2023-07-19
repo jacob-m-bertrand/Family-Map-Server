@@ -1,70 +1,71 @@
 package dao;
 
-import model.*;
+import dao.tools.SQLTools;
+import dao.tools.TableTools;
+import exception.DataAccessException;
+import exception.NotFoundException;
+import model.Authtoken;
 
-import javax.xml.crypto.Data;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+/**
+ * Interfaces between the server and the Authtoken table.
+ */
 public class AuthtokenDAO {
-    private final Connection conn;
-
     /**
-     * @param conn Server connection
-     */
-    public AuthtokenDAO(Connection conn) {
-        this.conn = conn;
-    }
-
-    /**
-     * Inserts an event into the Events table
-     * @param authtoken Authtoken to insert into the Events table
+     * Inserts an Authtoken into the Authtoken table.
+     * @param authtoken Authtoken to insert.
      */
     public void insert(Authtoken authtoken) throws DataAccessException {
-        String insertSql = String.format("INSERT INTO Authtoken VALUES ('%s', '%s')",
-                authtoken.getUsername(), authtoken.getAuthtoken());
+        // Create the sql statement from the provided authtoken
+        String insertSql = String.format("INSERT INTO Authtoken VALUES ('%s', '%s')", authtoken.getAuthtoken(),
+                authtoken.getUsername());
 
+        // Use the SQLTools execution to run the insertion, and store the number of rows added.
         int rowsAdded = SQLTools.executeInsert(insertSql);
 
         // If no rows were added, throw an exception
-        if(rowsAdded == 0) throw new DataAccessException("No rows were added.");
+        if (rowsAdded == 0) {
+            throw new DataAccessException("No rows were added.");
+        }
 
-        // Commit the changes and cleanup
+        // Commit the changes to the Database
         Database.commit();
     }
 
     /**
-     * Returns a specified event from the event table
-     * @param username              The username correlated with the authtoken we want
-     * @return                      An Event object representing the event from the table
-     * @throws DataAccessException  In the case that the authtoken cannot be found or the table does not exist
+     * Returns the username associated with a specific authtoken.
+     * @param authtoken             The provided authtoken.
+     * @return                      The username associated with the provided authtoken.
+     * @throws DataAccessException  If there is an issue accessing the database or table.
      */
-    public Authtoken find(String username) throws DataAccessException, NotFoundException {
-        // If the event doesn't exist in the table, throw an exception
-        if(ValueTools.exists("Authtoken", "username", username)) throw new NotFoundException();
+    public String find(String authtoken) throws DataAccessException, NotFoundException {
+        // Build the sql statement from the provided authtoken
+        String findSql = String.format("SELECT username FROM Authtoken WHERE authtoken = '%s'", authtoken);
 
-        String findSql = String.format("SELECT * FROM Authtoken WHERE username = '%s'", username);
-
-        // Store the results of the query, then close
+        // Store the results of the query
         ResultSet findResult = SQLTools.executeQuery(findSql);
 
-        return createAuthtokenObject(findResult);
-    }
-
-    private Authtoken createAuthtokenObject(ResultSet result) throws DataAccessException {
         try {
-            String username = result.getString(1);
-            String authtoken = result.getString(2);
+            if (!findResult.next()) {
+                throw new NotFoundException();
+            }
 
-            return new Authtoken(username);
-        }
-        catch(SQLException e) {
-            throw new DataAccessException(e.getMessage());
+            // Return the result of the find
+            return findResult.getString("username");
+
+        } catch (SQLException s) {
+            throw new DataAccessException(s.getMessage());
         }
     }
 
     /**
-     * Clears the table
-     * @throws DataAccessException in the case that the table does not exist
+     * Clears the Authtoken table.
+     * @throws DataAccessException If there is an issue accessing the database or table.
+     * @see TableTools TableTools.clear()
      */
-    public void clear() throws DataAccessException { TableTools.clear("Authtoken"); }
+    public void clear() throws DataAccessException {
+        TableTools.clear("Authtoken");
+    }
 }

@@ -1,24 +1,60 @@
 package service;
 
+import dao.PersonDAO;
+import exception.DataAccessException;
+import exception.NotFoundException;
+import request.AuthenticatedRequest;
+import result.ListPersonsResult;
+import service.requestvalidation.RequestAuthenticator;
+
+import java.util.Objects;
+
+
 /**
- * Serves the /person endpoint
- * Lists all the persons from the database
+ * Retrieves a list of all the {@link model.Person} objects associated with the requesting user.
  */
-public class ListPersonsService extends Service {
+public class ListPersonsService {
+    /** Data Access Object for the Person table, used to retrieve Person objects. */
+    private final PersonDAO personDAO;
+
+    /** Authenticator object which authenticates the request. */
+    private final RequestAuthenticator authenticator;
 
     /**
-     * Construct the ListPersonsService
+     * Constructs the ListPersonsService.
+     * @param request The request which provides authentication information.
      */
-    public ListPersonsService() {
+    public ListPersonsService(AuthenticatedRequest request) {
+        // Initialize the DAO, and pass it a database connection
+        personDAO = new PersonDAO();
 
+        // Initialize the authenticator, and pass it the request
+        authenticator = new RequestAuthenticator(request);
     }
 
     /**
-     * Process the request using DAO and model classes
-     * Saves the result to the result variable found in the service superclass
+     * Processes the listing of people associated with the requesting user.
      */
-    @Override
-    public void process() {
+    public ListPersonsResult listPersons() {
+        try {
+            /* Get the username of the requesting user via te authenticator. If the authtoken is not valid, it returns
+            and stores "" */
+            String username = authenticator.getAuthenticatedUsername();
 
+            if (!Objects.equals(username, "")) {
+                // If the authtoken is valid, store a successful result with the list of people
+                return new ListPersonsResult(true, personDAO.listUserPersons(username));
+            } else {
+                // If the authtoken is not valid, store an unsuccessful result
+                return new ListPersonsResult(false, "Error: Invalid auth token.");
+            }
+        } catch (DataAccessException d) {
+            // Caused by a sql error or a problem accessing the database
+            return new ListPersonsResult(false, "Internal server error (" + d.getMessage() + ").");
+
+        } catch (NotFoundException n) {
+            // Thrown if there are no people in the database associated with the user
+            return new ListPersonsResult(false, "Internal server error (user not found).");
+        }
     }
 }

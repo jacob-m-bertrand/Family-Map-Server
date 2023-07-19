@@ -1,35 +1,36 @@
 package dao;
 
-import model.Event;
-import model.Person;
+import dao.tools.SQLTools;
+import dao.tools.TableTools;
+import exception.DataAccessException;
+import exception.NotFoundException;
 import model.User;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+/**
+ * Interfaces between the server and the User table.
+ */
 public class UserDAO {
-    private final Connection conn;
-
     /**
-     * @param conn Server connection
-     */
-    public UserDAO(Connection conn) {
-        this.conn = conn;
-    }
-
-    /**
-     * Inserts an event into the Events table
-     * @param user Event object to insert into the Events table
+     * Inserts a user into the User table.
+     * @param user                  User object to insert into the User table.
+     * @throws DataAccessException  If there is an issue accessing the database, or inserting into the Event table.
      */
     public void insert(User user) throws DataAccessException {
-        String insertSql = String.format("INSERT INTO User VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s'')",
-                user.getPersonID(), user.getPassword(), user.getEmail(), user.getFirstName(), user.getLastName(),
+        // Build sql statement using provided user information
+        String insertSql = String.format("INSERT INTO User VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+                user.getUsername(), user.getPassword(), user.getEmail(), user.getFirstName(), user.getLastName(),
                 user.getGender(), user.getPersonID());
 
+        // Execute the insert and store the number of rows that were added
         int rowsAdded = SQLTools.executeInsert(insertSql);
 
         // If no rows were added, throw an exception
-        if(rowsAdded == 0) throw new DataAccessException("No rows were added.");
+        if (rowsAdded == 0) {
+            throw new DataAccessException("No rows were added.");
+        }
 
         // Commit the changes and cleanup
         Database.commit();
@@ -37,23 +38,44 @@ public class UserDAO {
 
 
     /**
-     * Returns a specified user from the event table
-     * @param username               The id of the event
-     * @return                      An Event object representing the event from the table
-     * @throws DataAccessException  In the case that the event cannot be found or the table does not exist
+     * Finds a user from the table.
+     * @param username              The username of the user to find.
+     * @return                      The requested {@link User} object.
+     * @throws DataAccessException  If there is an issue accessing the database or table.
      */
     public User find(String username) throws DataAccessException, NotFoundException {
-        // If the event doesn't exist in the table, throw an exception
-        if(ValueTools.exists("User", "username", username)) throw new NotFoundException();
-
-        String findSql = String.format("SELECT * FROM User WHERE eventID = '%s'", username);
+        // Create the sql statement using the provided username
+        String findSql = String.format("SELECT * FROM User WHERE username = '%s'", username);
 
         // Store the results of the query, then close
         ResultSet findResult = SQLTools.executeQuery(findSql);
 
+        try {
+            if (!findResult.next()) {
+                throw new NotFoundException();
+            }
+        }
+        catch(SQLException s) {
+            throw new DataAccessException(s.getMessage());
+        }
+
         return createUserObject(findResult);
     }
 
+    /**
+     * Clears the User table.
+     * @throws DataAccessException If there is an issue accessing the database or table.
+     */
+    public void clear() throws DataAccessException {
+        TableTools.clear("User");
+    }
+
+    /**
+     * Helper function which turns jdbc ResultSets into a User object.
+     * @param result                The ResultSet generated from a query.
+     * @return                      A user with the data from a row in the table.
+     * @throws DataAccessException  If there is an issue accessing the database or table.
+     */
     private User createUserObject(ResultSet result) throws DataAccessException {
         try {
             String username = result.getString(1);
@@ -64,16 +86,10 @@ public class UserDAO {
             String gender = result.getString(6);
             String personID = result.getString(7);
 
-            return new User(username, password, email, firstName, lastName, gender);
-        }
-        catch(SQLException e) {
+            return new User(username, password, email, firstName, lastName, gender, personID);
+
+        } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
     }
-
-    /**
-     * Clears the table
-     * @throws DataAccessException in the case that the table does not exist
-     */
-    public void clear() throws DataAccessException { TableTools.clear("User"); }
 }

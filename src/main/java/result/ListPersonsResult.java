@@ -5,15 +5,29 @@ import model.Person;
 import java.util.ArrayList;
 
 /**
- * Stores the result of ListPersonsService (/person)
+ * Stores the result of the person listing process in {@link service.ListPersonsService}.
  */
 public class ListPersonsResult extends Result {
-    /** Store an ArrayList of all the persons in the database */
+    /** The list of {@link Person} objects returned by the service. */
     private final ArrayList<Person> data;
 
-    /** Take in result data while constructing the ListPersonsResult */
-    public ListPersonsResult(String message, boolean success, ArrayList<Person> data) {
-        super(message, success);
+    /**
+     * Constructs the ListPersonsResult with a message.
+     * @param success The success status of the service.
+     * @param message The message returned by the service.
+     */
+    public ListPersonsResult(boolean success, String message) {
+        super(success, message);
+        data = null;
+    }
+
+    /**
+     * Constructs the ListPersonsResult with the requested list of people.
+     * @param success    The success status of the service.
+     * @param data The requested list of {@link Person} objects.
+     */
+    public ListPersonsResult(boolean success, ArrayList<Person> data) {
+        super(success);
         this.data = data;
     }
 

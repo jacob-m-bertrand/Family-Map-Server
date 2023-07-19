@@ -1,18 +1,37 @@
 package request;
 
 /**
- * Stores data which will be passed to RegisterService (/user/register)
+ * Stores user data for the registration process in the {@link service.RegisterService}.
  */
 public class RegisterRequest {
-    /** Store the information for the new user */
+    /** The user's chosen username. It must be unique. */
     private final String username;
+
+    /** The user's chosen password. */
     private final String password;
+
+    /** The user's email address */
     private final String email;
+
+    /** The user's first name. It will be used later to create the user's Person in the database */
     private final String firstName;
+
+    /** The user's last name. It will be used later to create the user's Person in the database */
     private final String lastName;
+
+    /** The user's gender. It will be used later to create the user's Person in the database */
     private final String gender;
 
-    /** Take in the fields while constructing this object */
+    /**
+     * Constructs a new RegisterRequest object with the specified user details.
+     *
+     * @param username  The chosen username for the user. Must be unique.
+     * @param password  The chosen password for the user.
+     * @param email     The email address of the user.
+     * @param firstName The first name of the user.
+     * @param lastName  The last name of the user.
+     * @param gender    The gender of the user.
+     */
     public RegisterRequest(String username, String password, String email, String firstName, String lastName, String gender) {
         this.username = username;
         this.password = password;
