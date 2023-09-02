@@ -1,14 +1,4 @@
-# FamilyMapServerStudent
+# Family Map Server 
+ The Family Map server is an old project for <a href="https://catalog2022.byu.edu/physical-and-mathematical-sciences/computer-science/advanced-programming-concepts">BYU's C S 240 class (Advanced Programming Concepts)</a>. Project specifications can be found <a href="https://docs.google.com/document/d/1FQoUDkwUnWcQypZGgFC1uy_BqZoZ9nN9qotARkW80nA/edit?usp=sharing>here.</a>
 
-- Refer to the <b>How To Get Started</b> document on the <b>Family Map Server Program Assignment</b> for more detailed instructions and help with common issues. 
-
-General Instructions:
-1.	Follow the instructions on github regarding how to clone this repository into a directory on your local machine.
-2.	Open IntelliJ.
-3.	Select File -> Open...
-4.	Navigate to the newly cloned repository and select it.
-5.	Allow IntelliJ a few minutes to download any dependencies and set up the project.
-6.	Once it is done loading, make sure the main function found in HelloWorld.java runs without errors. It is found inside the project in the ``src/main/java/HelloWorld.java`` directory. 
-7.	Select Help -> Edit Custom VM Options and add the following line to the end of the file: `-Deditable.java.test.console=true` This is necessary to run the test driver properly.
-8.	Select File -> Invalidate Caches / Restart.
-9.	Once IntelliJ finishes restarting, you should be good to go. Good luck!
+ Family Map Server is a backend written in Java which allows a user to store and generate family history data, and access it via several api endpoints.
