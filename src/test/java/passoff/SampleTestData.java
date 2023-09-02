@@ -24,7 +24,7 @@ public class SampleTestData {
     private final ArrayList<Authtoken> authtokens;
 
     /**
-     * Constructs the SampleTestData, and adds sample data to the arrays.
+     * Constructs the passoff.SampleTestData, and adds sample data to the arrays.
      */
     public SampleTestData() {
         // Sample users
